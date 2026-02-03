@@ -43,8 +43,8 @@
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
+  --primary: oklch(0.45 0.15 250);
+  --primary-foreground: oklch(0.98 0.01 250);
   --sidebar-primary: var(--color-blue-600);
   --sidebar-primary-foreground: var(--color-blue-50);
   --chart-1: var(--color-blue-300);
@@ -63,10 +63,10 @@
   --secondary-foreground: oklch(0.4 0.015 65);
   --muted: oklch(0.967 0.001 286.375);
   --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
+  --accent: oklch(0.65 0.18 160);
+  --accent-foreground: oklch(0.98 0.01 160);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0.01 25);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.623 0.214 259.815);
@@ -79,8 +79,8 @@
 }
 
 .dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
+  --primary: oklch(0.60 0.18 250);
+  --primary-foreground: oklch(0.15 0.02 250);
   --sidebar-primary: var(--color-blue-500);
   --sidebar-primary-foreground: var(--color-blue-50);
   --background: oklch(0.141 0.005 285.823);
@@ -173,5 +173,68 @@
       padding-right: 2rem;
       max-width: 1280px; /* Standard content width */
     }
+  }
+}
+@layer utilities {
+  /* Elegant animations for security theme */
+  @keyframes shield-pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+  
+  @keyframes scan-line {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+  
+  @keyframes shell-harden {
+    0% {
+      opacity: 0.3;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.05);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .animate-shield-pulse {
+    animation: shield-pulse 3s ease-in-out infinite;
+  }
+  
+  .animate-scan-line {
+    animation: scan-line 2s linear infinite;
+  }
+  
+  .animate-shell-harden {
+    animation: shell-harden 2s ease-out forwards;
+  }
+  
+  /* Gradient backgrounds for hero sections */
+  .gradient-security {
+    background: linear-gradient(135deg, 
+      oklch(0.98 0.01 240) 0%, 
+      oklch(0.95 0.03 250) 50%, 
+      oklch(0.92 0.05 260) 100%);
+  }
+  
+  .gradient-verified {
+    background: linear-gradient(135deg, 
+      oklch(0.65 0.18 160) 0%, 
+      oklch(0.55 0.15 170) 100%);
   }
 }
