@@ -274,7 +274,7 @@ All code must pass through:
 
 ## 📄 License
 
-MIT License - See LICENSE file for details
+Proprietary — All Rights Reserved, Audrey Evans / GlowStarLabs. See [LICENSE](./LICENSE) for details.
 
 ---
 
