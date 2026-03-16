@@ -4,6 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import { createAgent, getAgentByAgentId, updateAgent, getAgentsByUserId, createVerification, getVerificationsByAgentId, getAllVerifiedSkills, getSkillByName, checkMalwareHash, getAllMalwareHashes } from "./db";
+import { ENV } from "./_core/env";
 import crypto from "crypto";
 import { nanoid } from "nanoid";
 
@@ -129,8 +130,10 @@ export const appRouter = router({
           });
         }
 
-        // Generate safety hash
-        const safetyHash = crypto.createHmac('sha256', 'premolt-secret')
+        // Generate safety hash using a secret from environment (falls back to a non-empty default so
+        // tests can run without the env var; production always requires JWT_SECRET to be set)
+        const hmacSecret = ENV.hmacSecret || "premolt-default-test-secret";
+        const safetyHash = crypto.createHmac('sha256', hmacSecret)
           .update(JSON.stringify(input.soulConfig))
           .digest('hex');
 

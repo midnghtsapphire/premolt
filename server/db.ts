@@ -18,6 +18,39 @@ export async function getDb() {
   return _db;
 }
 
+// ---------------------------------------------------------------------------
+// In-memory store — used when DATABASE_URL is not configured (e.g. tests)
+// ---------------------------------------------------------------------------
+interface InMemoryAgent {
+  id: number;
+  agentId: string;
+  userId?: number | null;
+  publicKey?: string | null;
+  soulConfig?: Record<string, unknown> | null;
+  status: "pending" | "verified" | "rejected" | "scanning";
+  safetyScore?: number | null;
+  safetyHash?: string | null;
+  verificationUrl?: string | null;
+  affiliateLink?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface InMemoryVerification {
+  id: number;
+  agentId: number;
+  scanType: string;
+  result: "pass" | "fail" | "warning";
+  details?: Record<string, unknown> | null;
+  scanLogs?: Array<{ timestamp: string; message: string; level: string }> | null;
+  createdAt: Date;
+}
+
+let _inMemAgentId = 1;
+let _inMemVerificationId = 1;
+const _inMemAgents = new Map<string, InMemoryAgent>();
+const _inMemVerifications: InMemoryVerification[] = [];
+
 export async function upsertUser(user: InsertUser): Promise<void> {
   if (!user.openId) {
     throw new Error("User openId is required for upsert");
@@ -92,7 +125,25 @@ export async function getUserByOpenId(openId: string) {
 // Agent-related queries
 export async function createAgent(agent: InsertAgent) {
   const db = await getDb();
-  if (!db) throw new Error("Database not available");
+  if (!db) {
+    const id = _inMemAgentId++;
+    const record: InMemoryAgent = {
+      id,
+      agentId: agent.agentId,
+      userId: agent.userId ?? null,
+      publicKey: agent.publicKey ?? null,
+      soulConfig: agent.soulConfig as Record<string, unknown> | null ?? null,
+      status: (agent.status ?? "pending") as InMemoryAgent["status"],
+      safetyScore: agent.safetyScore ?? null,
+      safetyHash: agent.safetyHash ?? null,
+      verificationUrl: agent.verificationUrl ?? null,
+      affiliateLink: agent.affiliateLink ?? null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    _inMemAgents.set(agent.agentId, record);
+    return record;
+  }
 
   const result = await db.insert(agents).values(agent);
   return result;
@@ -100,7 +151,9 @@ export async function createAgent(agent: InsertAgent) {
 
 export async function getAgentByAgentId(agentId: string) {
   const db = await getDb();
-  if (!db) return undefined;
+  if (!db) {
+    return _inMemAgents.get(agentId);
+  }
 
   const result = await db.select().from(agents).where(eq(agents.agentId, agentId)).limit(1);
   return result.length > 0 ? result[0] : undefined;
@@ -108,14 +161,24 @@ export async function getAgentByAgentId(agentId: string) {
 
 export async function updateAgent(agentId: string, updates: Partial<InsertAgent>) {
   const db = await getDb();
-  if (!db) throw new Error("Database not available");
+  if (!db) {
+    const existing = _inMemAgents.get(agentId);
+    if (existing) {
+      Object.assign(existing, updates, { updatedAt: new Date() });
+    }
+    return;
+  }
 
   await db.update(agents).set(updates).where(eq(agents.agentId, agentId));
 }
 
 export async function getAgentsByUserId(userId: number) {
   const db = await getDb();
-  if (!db) return [];
+  if (!db) {
+    return Array.from(_inMemAgents.values())
+      .filter(a => a.userId === userId)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
 
   return await db.select().from(agents).where(eq(agents.userId, userId)).orderBy(desc(agents.createdAt));
 }
@@ -123,7 +186,20 @@ export async function getAgentsByUserId(userId: number) {
 // Verification-related queries
 export async function createVerification(verification: InsertVerification) {
   const db = await getDb();
-  if (!db) throw new Error("Database not available");
+  if (!db) {
+    const id = _inMemVerificationId++;
+    const record: InMemoryVerification = {
+      id,
+      agentId: verification.agentId,
+      scanType: verification.scanType,
+      result: verification.result as InMemoryVerification["result"],
+      details: verification.details as Record<string, unknown> | null ?? null,
+      scanLogs: verification.scanLogs as InMemoryVerification["scanLogs"] ?? null,
+      createdAt: new Date(),
+    };
+    _inMemVerifications.push(record);
+    return record;
+  }
 
   const result = await db.insert(verifications).values(verification);
   return result;
@@ -131,7 +207,11 @@ export async function createVerification(verification: InsertVerification) {
 
 export async function getVerificationsByAgentId(agentId: number) {
   const db = await getDb();
-  if (!db) return [];
+  if (!db) {
+    return _inMemVerifications
+      .filter(v => v.agentId === agentId)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
 
   return await db.select().from(verifications).where(eq(verifications.agentId, agentId)).orderBy(desc(verifications.createdAt));
 }
