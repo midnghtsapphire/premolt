@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- ci: GitHubOrchestrator — remove duplicate pnpm `version` from pnpm/action-setup so it uses `packageManager` from package.json (fixes "Multiple versions of pnpm specified").
+
 ### Added
 - In-memory store fallback in `server/db.ts` so all tests run without a live database connection
 - `HMAC_SECRET` sourced from `JWT_SECRET` env var instead of hardcoded literal in `server/routers.ts`
