@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -36,7 +42,7 @@ export default function Verify() {
     if (uploadedFile) {
       setFile(uploadedFile);
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = event => {
         const content = event.target?.result as string;
         setSoulConfig(content);
       };
@@ -47,13 +53,16 @@ export default function Verify() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!agentId || !soulConfig) {
       toast.error("Please provide Agent ID and Soul Config");
       return;
     }
 
-    const skills = skillsList.split(",").map(s => s.trim()).filter(Boolean);
+    const skills = skillsList
+      .split(",")
+      .map(s => s.trim())
+      .filter(Boolean);
 
     verifyMutation.mutate({
       agentId,
@@ -97,7 +106,8 @@ export default function Verify() {
             </div>
             <h1 className="text-4xl font-bold">Verify Your Agent</h1>
             <p className="text-xl text-muted-foreground">
-              Upload your agent configuration for comprehensive security scanning and verification
+              Upload your agent configuration for comprehensive security
+              scanning and verification
             </p>
           </div>
 
@@ -106,7 +116,8 @@ export default function Verify() {
             <CardHeader>
               <CardTitle>Agent Configuration</CardTitle>
               <CardDescription>
-                Provide your agent's ID, public key, and soul configuration for verification
+                Provide your agent's ID, public key, and soul configuration for
+                verification
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -120,7 +131,7 @@ export default function Verify() {
                       id="agentId"
                       placeholder="agent-12345"
                       value={agentId}
-                      onChange={(e) => setAgentId(e.target.value)}
+                      onChange={e => setAgentId(e.target.value)}
                       className="pl-10"
                       required
                     />
@@ -134,14 +145,16 @@ export default function Verify() {
                     id="publicKey"
                     placeholder="-----BEGIN PUBLIC KEY-----&#10;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...&#10;-----END PUBLIC KEY-----"
                     value={publicKey}
-                    onChange={(e) => setPublicKey(e.target.value)}
+                    onChange={e => setPublicKey(e.target.value)}
                     rows={4}
                   />
                 </div>
 
                 {/* Soul Config Upload */}
                 <div className="space-y-2">
-                  <Label htmlFor="soulFile">Upload Soul Config (soul.md) *</Label>
+                  <Label htmlFor="soulFile">
+                    Upload Soul Config (soul.md) *
+                  </Label>
                   <div className="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary/50 transition-colors">
                     <input
                       type="file"
@@ -156,12 +169,16 @@ export default function Verify() {
                           <>
                             <FileText className="h-12 w-12 text-accent" />
                             <p className="font-medium">{file.name}</p>
-                            <p className="text-sm text-muted-foreground">Click to change file</p>
+                            <p className="text-sm text-muted-foreground">
+                              Click to change file
+                            </p>
                           </>
                         ) : (
                           <>
                             <Upload className="h-12 w-12 text-muted-foreground" />
-                            <p className="font-medium">Click to upload or drag and drop</p>
+                            <p className="font-medium">
+                              Click to upload or drag and drop
+                            </p>
                             <p className="text-sm text-muted-foreground">
                               Supports .md, .txt, .json files
                             </p>
@@ -174,12 +191,14 @@ export default function Verify() {
 
                 {/* Manual Soul Config */}
                 <div className="space-y-2">
-                  <Label htmlFor="soulConfig">Or Paste Soul Config (JSON) *</Label>
+                  <Label htmlFor="soulConfig">
+                    Or Paste Soul Config (JSON) *
+                  </Label>
                   <Textarea
                     id="soulConfig"
                     placeholder='{"name": "MyAgent", "personality": "helpful", ...}'
                     value={soulConfig}
-                    onChange={(e) => setSoulConfig(e.target.value)}
+                    onChange={e => setSoulConfig(e.target.value)}
                     rows={6}
                     className="font-mono text-sm"
                   />
@@ -187,15 +206,18 @@ export default function Verify() {
 
                 {/* Skills List */}
                 <div className="space-y-2">
-                  <Label htmlFor="skillsList">Installed Skills (comma-separated)</Label>
+                  <Label htmlFor="skillsList">
+                    Installed Skills (comma-separated)
+                  </Label>
                   <Input
                     id="skillsList"
                     placeholder="weather-skill, file-manager, web-scraper"
                     value={skillsList}
-                    onChange={(e) => setSkillsList(e.target.value)}
+                    onChange={e => setSkillsList(e.target.value)}
                   />
                   <p className="text-sm text-muted-foreground">
-                    List all skills your agent has installed for supply chain verification
+                    List all skills your agent has installed for supply chain
+                    verification
                   </p>
                 </div>
 
@@ -248,7 +270,8 @@ export default function Verify() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  Automated red teaming tests for prompt injection vulnerabilities
+                  Automated red teaming tests for prompt injection
+                  vulnerabilities
                 </p>
               </CardContent>
             </Card>

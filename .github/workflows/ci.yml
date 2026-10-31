@@ -11,8 +11,8 @@ permissions:
 
 jobs:
   test:
-    name: Lint, Type-check & Test
-    runs-on: ubuntu-latest
+    name: Lint, Type-check, Test, & Build
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -46,3 +46,6 @@ jobs:
 
       - name: Run tests
         run: pnpm test
+
+      - name: Run build
+        run: pnpm run build

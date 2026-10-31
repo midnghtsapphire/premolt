@@ -57,8 +57,10 @@ describe("agents.verify", () => {
     expect(result).toBeDefined();
     expect(result.safetyScore).toBeLessThan(100);
     expect(result.scanLogs).toBeDefined();
-    
-    const warningLogs = result.scanLogs?.filter((log: any) => log.level === "warning");
+
+    const warningLogs = result.scanLogs?.filter(
+      (log: any) => log.level === "warning"
+    );
     expect(warningLogs?.length).toBeGreaterThan(0);
   });
 
@@ -77,8 +79,10 @@ describe("agents.verify", () => {
 
     expect(result).toBeDefined();
     expect(result.safetyScore).toBeLessThan(100);
-    
-    const errorLogs = result.scanLogs?.filter((log: any) => log.level === "error");
+
+    const errorLogs = result.scanLogs?.filter(
+      (log: any) => log.level === "error"
+    );
     expect(errorLogs?.length).toBeGreaterThan(0);
   });
 
@@ -98,7 +102,9 @@ describe("agents.verify", () => {
     expect(result.verificationUrl).toContain("premolt.com/verify");
     expect(result.verificationUrl).toContain(result.agentId);
     expect(result.affiliateLink).toContain("Verified by Premolt.com");
-    expect(result.affiliateLink).toContain(`Safety Score: ${result.safetyScore}/100`);
+    expect(result.affiliateLink).toContain(
+      `Safety Score: ${result.safetyScore}/100`
+    );
   });
 
   it("should update existing agent on re-verification", async () => {
@@ -139,7 +145,9 @@ describe("agents.getByAgentId", () => {
     });
 
     // Retrieve the agent
-    const agent = await caller.agents.getByAgentId({ agentId: "test-agent-006" });
+    const agent = await caller.agents.getByAgentId({
+      agentId: "test-agent-006",
+    });
 
     expect(agent).toBeDefined();
     expect(agent?.agentId).toBe("test-agent-006");
@@ -149,7 +157,9 @@ describe("agents.getByAgentId", () => {
     const { ctx } = createTestContext();
     const caller = appRouter.createCaller(ctx);
 
-    const agent = await caller.agents.getByAgentId({ agentId: "non-existent-agent" });
+    const agent = await caller.agents.getByAgentId({
+      agentId: "non-existent-agent",
+    });
 
     expect(agent).toBeUndefined();
   });

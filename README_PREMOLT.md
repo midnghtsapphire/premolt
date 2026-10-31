@@ -114,6 +114,7 @@ The following environment variables are automatically configured:
 ### Supply Chain Verification
 
 Every skill is checked against known malware databases:
+
 - SHA-256 hash verification
 - Repository source validation
 - Dependency analysis
@@ -121,6 +122,7 @@ Every skill is checked against known malware databases:
 ### Prompt Injection Testing
 
 Automated red teaming attempts:
+
 - API key extraction tests
 - File system access tests
 - Configuration leak detection
@@ -128,6 +130,7 @@ Automated red teaming attempts:
 ### Cryptographic Proof
 
 Each verified agent receives:
+
 - Safety hash (HMAC-SHA256)
 - Unique verification URL
 - Shareable affiliate link
@@ -236,17 +239,20 @@ pnpm test agents.verify.test.ts
 ## 📈 Roadmap
 
 ### Phase 1: MVP (Complete)
+
 - ✅ Basic verification flow
 - ✅ Security scanning
 - ✅ Skill pharmacy
 - ✅ User dashboard
 
 ### Phase 2: Enhanced Security
+
 - [ ] Docker container isolation
 - [ ] Advanced red teaming
 - [ ] Real-time threat intelligence
 
 ### Phase 3: Network State Integration
+
 - [ ] DID (Decentralized Identity) credentials
 - [ ] Network state partnerships
 - [ ] Verified agent territories
@@ -265,6 +271,7 @@ This project follows Extreme Programming (XP) and Agile methodologies:
 ### Code Review Process
 
 All code must pass through:
+
 1. **Dev Environment**: Local development and testing
 2. **Test Environment**: Integration testing
 3. **Code Review**: Using Coderabbit (connected to GitHub)
