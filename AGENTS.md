@@ -3,7 +3,7 @@
 <!--
   MIDNGHTSAPPHIRE UNIVERSAL REPO INSTRUCTIONS
   Owner: Audrey Evans (@midnghtsapphire)
-  
+
   This file is read automatically by:
   - Claude Code (also reads CLAUDE.md symlink)
   - GitHub Copilot Coding Agent
@@ -13,9 +13,9 @@
   - Windsurf (.windsurfrules symlink)
   - Cline (.clinerules symlink)
   - Aider, Amp, Replit, and others
-  
+
   SETUP: Run this once per repo to create symlinks:
-  
+
   ln -sf AGENTS.md CLAUDE.md
   ln -sf AGENTS.md .cursorrules
   ln -sf AGENTS.md .windsurfrules
@@ -101,24 +101,25 @@ Examples:
 
 When the repo does not have an established stack, use these defaults:
 
-| Layer | Default |
-|-------|---------|
+| Layer               | Default                                                  |
+| ------------------- | -------------------------------------------------------- |
 | Cross-platform apps | Expo (React Native) + TypeScript + NativeWind (Tailwind) |
-| Web-only apps | React + TypeScript + Vite + Tailwind |
-| Backend / API | Node.js (Express or Fastify) or Python (FastAPI) |
-| Database | PostgreSQL (via Supabase or direct) |
-| ORM | Prisma (Node) or SQLAlchemy (Python) |
-| Auth | Supabase Auth or custom JWT |
-| Hosting | DigitalOcean (Droplets or App Platform) |
-| CI/CD | GitHub Actions |
-| App builds | Expo EAS Build (no local Xcode/Android Studio needed) |
-| Package manager | pnpm (Node) or pip (Python) |
+| Web-only apps       | React + TypeScript + Vite + Tailwind                     |
+| Backend / API       | Node.js (Express or Fastify) or Python (FastAPI)         |
+| Database            | PostgreSQL (via Supabase or direct)                      |
+| ORM                 | Prisma (Node) or SQLAlchemy (Python)                     |
+| Auth                | Supabase Auth or custom JWT                              |
+| Hosting             | DigitalOcean (Droplets or App Platform)                  |
+| CI/CD               | GitHub Actions                                           |
+| App builds          | Expo EAS Build (no local Xcode/Android Studio needed)    |
+| Package manager     | pnpm (Node) or pip (Python)                              |
 
 ### Cross-Platform Framework: Expo (React Native)
 
 All apps targeting mobile (iOS + Android) MUST use Expo with React Native. This is non-negotiable.
 
 **Why Expo:**
+
 - Same React + TypeScript + Tailwind stack used across all projects
 - One codebase compiles to native iOS, native Android, and web
 - EAS Build handles App Store / Play Store builds in the cloud — no Xcode or Android Studio required
@@ -128,6 +129,7 @@ All apps targeting mobile (iOS + Android) MUST use Expo with React Native. This 
 - Expo has an MCP server for AI coding tools (Claude Code, Cursor)
 
 **Standard Expo Stack:**
+
 ```
 expo (latest SDK)
 expo-router          # File-based routing
@@ -139,6 +141,7 @@ expo-secure-store    # Secure credential storage
 ```
 
 **Creating a new cross-platform project:**
+
 ```bash
 npx create-expo-app@latest ProjectName --template blank-typescript
 cd ProjectName
@@ -147,6 +150,7 @@ npx expo start
 ```
 
 **Building for stores:**
+
 ```bash
 # Install EAS CLI
 npm install -g eas-cli
@@ -163,6 +167,7 @@ eas submit --platform android
 ```
 
 **DO NOT use:**
+
 - Flutter (requires Dart — different language, less AI training data)
 - Ionic/Cordova (WebView wrapper, not native)
 - Xamarin/.NET MAUI (C# ecosystem, not our stack)
@@ -206,9 +211,11 @@ Before declaring work complete:
 ## Project-Specific Context
 
 ### What This Project Is
+
 Sessiono — session musician subscription platform. Users browse, book, and pay session musicians. Musicians list their services, set rates, and manage bookings.
 
 ### Architecture
+
 ```
 app/                    # Expo Router file-based routing
   (tabs)/               # Bottom tab navigation
@@ -224,6 +231,7 @@ constants/              # Theme, config
 ```
 
 ### Key Commands
+
 ```bash
 npx expo start          # Dev server (scan QR with Expo Go)
 npx expo start --web    # Web dev server
@@ -232,6 +240,7 @@ eas submit --platform ios  # Submit to App Store
 ```
 
 ### Current State
+
 - UI scaffolding complete with dark cinematic theme
 - Demo data in place — needs Supabase integration
 - Auth screen built — needs Supabase auth wiring

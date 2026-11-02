@@ -8,9 +8,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Fixed
+
 - ci: GitHubOrchestrator — remove duplicate pnpm `version` from pnpm/action-setup so it uses `packageManager` from package.json (fixes "Multiple versions of pnpm specified").
+- ci: Pinned `runs-on` to `ubuntu-24.04` to resolve `ubuntu-latest` migration warning and make CI robust.
+- ci: Added `pnpm run build` to ensure the app successfully builds during CI testing.
 
 ### Added
+
 - In-memory store fallback in `server/db.ts` so all tests run without a live database connection
 - `HMAC_SECRET` sourced from `JWT_SECRET` env var instead of hardcoded literal in `server/routers.ts`
 - `hmacSecret` field on the `ENV` constant in `server/_core/env.ts`
@@ -23,6 +27,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Proprietary license clarification: updated `LICENSE` file formatting, `package.json` `license` field, and README
 
 ### Fixed
+
 - `server/db.ts` `createAgent` and `updateAgent` no longer throw "Database not available" in test/no-DB environments
 - `server/db.ts` `createVerification` no longer throws in test/no-DB environments
 
@@ -31,6 +36,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [1.0.0] — 2026-01-01
 
 ### Added
+
 - Initial release: Premolt AI Agent Security Sandbox
 - Landing page with animated shield hero section
 - Agent verification API (tRPC `agents.verify` mutation)

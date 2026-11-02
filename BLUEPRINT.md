@@ -3,7 +3,7 @@
 **Project:** Premolt — AI Agent Security Sandbox  
 **Author:** Audrey Evans / GlowStarLabs  
 **Organization:** Freedom Angel Corp (EIN: 86-1209156, est. 2010)  
-**Version:** 1.0.0  
+**Version:** 1.0.0
 
 ---
 
@@ -156,14 +156,14 @@ Client redirects to /diagnostics/{agentId}
 
 ## 5. Database Schema
 
-| Table | Key Fields | Purpose |
-|-------|-----------|---------|
-| `users` | `id`, `openId`, `role` | Auth-backed user profiles |
-| `agents` | `id`, `agentId`, `status`, `safetyScore`, `safetyHash` | Agent verification records |
-| `verifications` | `id`, `agentId`, `result`, `scanLogs` | Per-scan audit trail |
-| `skills` | `id`, `skillName`, `isVerified`, `safetyRating` | Skill pharmacy catalog |
-| `agentSkills` | `agentId`, `skillId` | Agent ↔ skill join table |
-| `malwareDatabase` | `malwareHash`, `severity` | Known malicious hashes |
+| Table             | Key Fields                                             | Purpose                    |
+| ----------------- | ------------------------------------------------------ | -------------------------- |
+| `users`           | `id`, `openId`, `role`                                 | Auth-backed user profiles  |
+| `agents`          | `id`, `agentId`, `status`, `safetyScore`, `safetyHash` | Agent verification records |
+| `verifications`   | `id`, `agentId`, `result`, `scanLogs`                  | Per-scan audit trail       |
+| `skills`          | `id`, `skillName`, `isVerified`, `safetyRating`        | Skill pharmacy catalog     |
+| `agentSkills`     | `agentId`, `skillId`                                   | Agent ↔ skill join table  |
+| `malwareDatabase` | `malwareHash`, `severity`                              | Known malicious hashes     |
 
 ---
 
@@ -178,51 +178,51 @@ Client redirects to /diagnostics/{agentId}
 
 ## 7. Security Considerations
 
-| Risk | Mitigation |
-|------|-----------|
-| Hardcoded HMAC key | `JWT_SECRET` env var; falls back to test default only when env not set |
-| SQL injection | Drizzle ORM parameterised queries |
-| XSS | React DOM escaping; shadcn/ui components |
-| CSRF | SameSite=None + Secure cookies; tRPC POST mutations require JSON body |
-| Admin route access | Role check in `malware.getAll`; tRPC `protectedProcedure` for user data |
-| Supply chain attacks | SHA-256 hash of skill names checked against `malwareDatabase` |
+| Risk                 | Mitigation                                                              |
+| -------------------- | ----------------------------------------------------------------------- |
+| Hardcoded HMAC key   | `JWT_SECRET` env var; falls back to test default only when env not set  |
+| SQL injection        | Drizzle ORM parameterised queries                                       |
+| XSS                  | React DOM escaping; shadcn/ui components                                |
+| CSRF                 | SameSite=None + Secure cookies; tRPC POST mutations require JSON body   |
+| Admin route access   | Role check in `malware.getAll`; tRPC `protectedProcedure` for user data |
+| Supply chain attacks | SHA-256 hash of skill names checked against `malwareDatabase`           |
 
 ---
 
 ## 8. Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Production | MySQL/TiDB connection string |
-| `JWT_SECRET` | Production | Session cookie signing + HMAC key |
-| `VITE_APP_ID` | Yes | Manus OAuth application ID |
-| `OAUTH_SERVER_URL` | Yes | OAuth backend base URL |
-| `VITE_OAUTH_PORTAL_URL` | Yes | OAuth login portal URL |
-| `OWNER_OPEN_ID` | Optional | OpenID of the admin user |
-| `NODE_ENV` | Auto | `development` / `production` |
+| Variable                | Required   | Description                       |
+| ----------------------- | ---------- | --------------------------------- |
+| `DATABASE_URL`          | Production | MySQL/TiDB connection string      |
+| `JWT_SECRET`            | Production | Session cookie signing + HMAC key |
+| `VITE_APP_ID`           | Yes        | Manus OAuth application ID        |
+| `OAUTH_SERVER_URL`      | Yes        | OAuth backend base URL            |
+| `VITE_OAUTH_PORTAL_URL` | Yes        | OAuth login portal URL            |
+| `OWNER_OPEN_ID`         | Optional   | OpenID of the admin user          |
+| `NODE_ENV`              | Auto       | `development` / `production`      |
 
 ---
 
 ## 9. Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend framework | React 19 |
-| Routing | Wouter 3 |
-| UI components | shadcn/ui (Radix UI primitives) |
-| Styling | Tailwind CSS 4 + tw-animate-css |
-| API layer | tRPC 11 (type-safe RPC) |
-| State / data fetching | TanStack Query v5 |
-| Backend runtime | Node.js 22 + Express 4 |
-| Database ORM | Drizzle ORM 0.44 |
-| Database | MySQL 8 / TiDB |
-| Validation | Zod 4 |
-| Authentication | Manus OAuth + jose JWT |
-| Testing | Vitest 2 |
-| Build tool | Vite 7 + esbuild |
-| Package manager | pnpm 10 |
-| CI/CD | GitHub Actions |
+| Layer                 | Technology                      |
+| --------------------- | ------------------------------- |
+| Frontend framework    | React 19                        |
+| Routing               | Wouter 3                        |
+| UI components         | shadcn/ui (Radix UI primitives) |
+| Styling               | Tailwind CSS 4 + tw-animate-css |
+| API layer             | tRPC 11 (type-safe RPC)         |
+| State / data fetching | TanStack Query v5               |
+| Backend runtime       | Node.js 22 + Express 4          |
+| Database ORM          | Drizzle ORM 0.44                |
+| Database              | MySQL 8 / TiDB                  |
+| Validation            | Zod 4                           |
+| Authentication        | Manus OAuth + jose JWT          |
+| Testing               | Vitest 2                        |
+| Build tool            | Vite 7 + esbuild                |
+| Package manager       | pnpm 10                         |
+| CI/CD                 | GitHub Actions                  |
 
 ---
 
-*This document is the authoritative technical reference for Premolt. Update on every architectural change.*
+_This document is the authoritative technical reference for Premolt. Update on every architectural change._

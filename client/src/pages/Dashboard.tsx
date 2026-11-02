@@ -1,9 +1,22 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, ShieldCheck, AlertTriangle, TrendingUp, Users, Database } from "lucide-react";
+import {
+  Shield,
+  ShieldCheck,
+  AlertTriangle,
+  TrendingUp,
+  Users,
+  Database,
+} from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
@@ -38,7 +51,7 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button onClick={() => window.location.href = getLoginUrl()}>
+            <Button onClick={() => (window.location.href = getLoginUrl())}>
               Sign In
             </Button>
           </CardContent>
@@ -60,9 +73,12 @@ export default function Dashboard() {
     }
   };
 
-  const verifiedCount = userAgents?.filter(a => a.status === "verified").length || 0;
-  const rejectedCount = userAgents?.filter(a => a.status === "rejected").length || 0;
-  const scanningCount = userAgents?.filter(a => a.status === "scanning").length || 0;
+  const verifiedCount =
+    userAgents?.filter(a => a.status === "verified").length || 0;
+  const rejectedCount =
+    userAgents?.filter(a => a.status === "rejected").length || 0;
+  const scanningCount =
+    userAgents?.filter(a => a.status === "scanning").length || 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -84,9 +100,13 @@ export default function Dashboard() {
                 <Button variant="ghost">Skill Pharmacy</Button>
               </Link>
               <div className="flex items-center gap-2 px-3 py-2 bg-muted rounded-lg">
-                <span className="text-sm font-medium">{user?.name || user?.email}</span>
+                <span className="text-sm font-medium">
+                  {user?.name || user?.email}
+                </span>
                 {user?.role === "admin" && (
-                  <Badge variant="outline" className="text-xs">Admin</Badge>
+                  <Badge variant="outline" className="text-xs">
+                    Admin
+                  </Badge>
                 )}
               </div>
             </div>
@@ -109,37 +129,53 @@ export default function Dashboard() {
           <div className="grid md:grid-cols-4 gap-6">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base font-medium">Total Agents</CardTitle>
+                <CardTitle className="text-base font-medium">
+                  Total Agents
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{userAgents?.length || 0}</div>
+                <div className="text-3xl font-bold">
+                  {userAgents?.length || 0}
+                </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base font-medium">Verified</CardTitle>
+                <CardTitle className="text-base font-medium">
+                  Verified
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-accent">{verifiedCount}</div>
+                <div className="text-3xl font-bold text-accent">
+                  {verifiedCount}
+                </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base font-medium">Scanning</CardTitle>
+                <CardTitle className="text-base font-medium">
+                  Scanning
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-primary">{scanningCount}</div>
+                <div className="text-3xl font-bold text-primary">
+                  {scanningCount}
+                </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base font-medium">Rejected</CardTitle>
+                <CardTitle className="text-base font-medium">
+                  Rejected
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-destructive">{rejectedCount}</div>
+                <div className="text-3xl font-bold text-destructive">
+                  {rejectedCount}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -160,17 +196,22 @@ export default function Dashboard() {
             <TabsContent value="agents" className="space-y-6">
               {userAgents && userAgents.length > 0 ? (
                 <div className="grid gap-6">
-                  {userAgents.map((agent) => (
+                  {userAgents.map(agent => (
                     <Card key={agent.id}>
                       <CardHeader>
                         <div className="flex items-start justify-between">
                           <div className="space-y-1">
                             <CardTitle>{agent.agentId}</CardTitle>
                             <CardDescription>
-                              Created {new Date(agent.createdAt).toLocaleDateString()}
+                              Created{" "}
+                              {new Date(agent.createdAt).toLocaleDateString()}
                             </CardDescription>
                           </div>
-                          <Badge className={getStatusColor(agent.status || "pending")}>
+                          <Badge
+                            className={getStatusColor(
+                              agent.status || "pending"
+                            )}
+                          >
                             {agent.status?.toUpperCase()}
                           </Badge>
                         </div>
@@ -178,15 +219,25 @@ export default function Dashboard() {
                       <CardContent className="space-y-4">
                         <div className="grid md:grid-cols-3 gap-4">
                           <div>
-                            <p className="text-sm text-muted-foreground">Safety Score</p>
-                            <p className="text-2xl font-bold">{agent.safetyScore || 0}/100</p>
+                            <p className="text-sm text-muted-foreground">
+                              Safety Score
+                            </p>
+                            <p className="text-2xl font-bold">
+                              {agent.safetyScore || 0}/100
+                            </p>
                           </div>
                           <div>
-                            <p className="text-sm text-muted-foreground">Status</p>
-                            <p className="text-lg font-semibold capitalize">{agent.status}</p>
+                            <p className="text-sm text-muted-foreground">
+                              Status
+                            </p>
+                            <p className="text-lg font-semibold capitalize">
+                              {agent.status}
+                            </p>
                           </div>
                           <div>
-                            <p className="text-sm text-muted-foreground">Last Updated</p>
+                            <p className="text-sm text-muted-foreground">
+                              Last Updated
+                            </p>
                             <p className="text-lg font-semibold">
                               {new Date(agent.updatedAt).toLocaleDateString()}
                             </p>
@@ -194,18 +245,26 @@ export default function Dashboard() {
                         </div>
                         <div className="flex gap-3">
                           <Button
-                            onClick={() => setLocation(`/diagnostics/${agent.agentId}`)}
+                            onClick={() =>
+                              setLocation(`/diagnostics/${agent.agentId}`)
+                            }
                           >
                             View Details
                           </Button>
-                          {agent.status === "verified" && agent.verificationUrl && (
-                            <Button
-                              variant="outline"
-                              onClick={() => window.open(agent.verificationUrl || "", "_blank")}
-                            >
-                              View Badge
-                            </Button>
-                          )}
+                          {agent.status === "verified" &&
+                            agent.verificationUrl && (
+                              <Button
+                                variant="outline"
+                                onClick={() =>
+                                  window.open(
+                                    agent.verificationUrl || "",
+                                    "_blank"
+                                  )
+                                }
+                              >
+                                View Badge
+                              </Button>
+                            )}
                         </div>
                       </CardContent>
                     </Card>
@@ -216,7 +275,9 @@ export default function Dashboard() {
                   <CardContent className="py-12 text-center space-y-4">
                     <ShieldCheck className="h-16 w-16 text-muted-foreground mx-auto" />
                     <div>
-                      <p className="text-lg font-semibold">No agents verified yet</p>
+                      <p className="text-lg font-semibold">
+                        No agents verified yet
+                      </p>
                       <p className="text-muted-foreground">
                         Start by verifying your first AI agent
                       </p>
@@ -237,12 +298,16 @@ export default function Dashboard() {
                     <CardHeader>
                       <div className="flex items-center gap-2">
                         <Users className="h-5 w-5 text-primary" />
-                        <CardTitle className="text-base">Platform Users</CardTitle>
+                        <CardTitle className="text-base">
+                          Platform Users
+                        </CardTitle>
                       </div>
                     </CardHeader>
                     <CardContent>
                       <div className="text-3xl font-bold">--</div>
-                      <p className="text-sm text-muted-foreground mt-1">Total registered users</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Total registered users
+                      </p>
                     </CardContent>
                   </Card>
 
@@ -250,12 +315,16 @@ export default function Dashboard() {
                     <CardHeader>
                       <div className="flex items-center gap-2">
                         <TrendingUp className="h-5 w-5 text-accent" />
-                        <CardTitle className="text-base">Verifications Today</CardTitle>
+                        <CardTitle className="text-base">
+                          Verifications Today
+                        </CardTitle>
                       </div>
                     </CardHeader>
                     <CardContent>
                       <div className="text-3xl font-bold">--</div>
-                      <p className="text-sm text-muted-foreground mt-1">New verifications</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        New verifications
+                      </p>
                     </CardContent>
                   </Card>
 
@@ -263,12 +332,16 @@ export default function Dashboard() {
                     <CardHeader>
                       <div className="flex items-center gap-2">
                         <AlertTriangle className="h-5 w-5 text-destructive" />
-                        <CardTitle className="text-base">Flagged Agents</CardTitle>
+                        <CardTitle className="text-base">
+                          Flagged Agents
+                        </CardTitle>
                       </div>
                     </CardHeader>
                     <CardContent>
                       <div className="text-3xl font-bold">{rejectedCount}</div>
-                      <p className="text-sm text-muted-foreground mt-1">Require review</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Require review
+                      </p>
                     </CardContent>
                   </Card>
                 </div>
@@ -311,13 +384,15 @@ export default function Dashboard() {
                   <CardContent>
                     {allMalware && allMalware.length > 0 ? (
                       <div className="space-y-3">
-                        {allMalware.map((entry) => (
+                        {allMalware.map(entry => (
                           <div
                             key={entry.id}
                             className="flex items-start justify-between p-4 border rounded-lg"
                           >
                             <div className="space-y-1">
-                              <p className="font-semibold">{entry.malwareName || "Unknown"}</p>
+                              <p className="font-semibold">
+                                {entry.malwareName || "Unknown"}
+                              </p>
                               <p className="text-sm text-muted-foreground">
                                 {entry.description || "No description"}
                               </p>
@@ -326,7 +401,11 @@ export default function Dashboard() {
                               </code>
                             </div>
                             <Badge
-                              variant={entry.severity === "critical" ? "destructive" : "secondary"}
+                              variant={
+                                entry.severity === "critical"
+                                  ? "destructive"
+                                  : "secondary"
+                              }
                             >
                               {entry.severity?.toUpperCase()}
                             </Badge>

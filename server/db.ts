@@ -1,7 +1,17 @@
 import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, agents, InsertAgent, verifications, InsertVerification, skills, Skill, malwareDatabase } from "../drizzle/schema";
-import { ENV } from './_core/env';
+import {
+  InsertUser,
+  users,
+  agents,
+  InsertAgent,
+  verifications,
+  InsertVerification,
+  skills,
+  Skill,
+  malwareDatabase,
+} from "../drizzle/schema";
+import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -42,7 +52,11 @@ interface InMemoryVerification {
   scanType: string;
   result: "pass" | "fail" | "warning";
   details?: Record<string, unknown> | null;
-  scanLogs?: Array<{ timestamp: string; message: string; level: string }> | null;
+  scanLogs?: Array<{
+    timestamp: string;
+    message: string;
+    level: string;
+  }> | null;
   createdAt: Date;
 }
 
@@ -89,8 +103,8 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       values.role = user.role;
       updateSet.role = user.role;
     } else if (user.openId === ENV.ownerOpenId) {
-      values.role = 'admin';
-      updateSet.role = 'admin';
+      values.role = "admin";
+      updateSet.role = "admin";
     }
 
     if (!values.lastSignedIn) {
@@ -117,7 +131,11 @@ export async function getUserByOpenId(openId: string) {
     return undefined;
   }
 
-  const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.openId, openId))
+    .limit(1);
 
   return result.length > 0 ? result[0] : undefined;
 }
@@ -132,7 +150,7 @@ export async function createAgent(agent: InsertAgent) {
       agentId: agent.agentId,
       userId: agent.userId ?? null,
       publicKey: agent.publicKey ?? null,
-      soulConfig: agent.soulConfig as Record<string, unknown> | null ?? null,
+      soulConfig: (agent.soulConfig as Record<string, unknown> | null) ?? null,
       status: (agent.status ?? "pending") as InMemoryAgent["status"],
       safetyScore: agent.safetyScore ?? null,
       safetyHash: agent.safetyHash ?? null,
@@ -155,11 +173,18 @@ export async function getAgentByAgentId(agentId: string) {
     return _inMemAgents.get(agentId);
   }
 
-  const result = await db.select().from(agents).where(eq(agents.agentId, agentId)).limit(1);
+  const result = await db
+    .select()
+    .from(agents)
+    .where(eq(agents.agentId, agentId))
+    .limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
 
-export async function updateAgent(agentId: string, updates: Partial<InsertAgent>) {
+export async function updateAgent(
+  agentId: string,
+  updates: Partial<InsertAgent>
+) {
   const db = await getDb();
   if (!db) {
     const existing = _inMemAgents.get(agentId);
@@ -180,7 +205,11 @@ export async function getAgentsByUserId(userId: number) {
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
-  return await db.select().from(agents).where(eq(agents.userId, userId)).orderBy(desc(agents.createdAt));
+  return await db
+    .select()
+    .from(agents)
+    .where(eq(agents.userId, userId))
+    .orderBy(desc(agents.createdAt));
 }
 
 // Verification-related queries
@@ -193,8 +222,9 @@ export async function createVerification(verification: InsertVerification) {
       agentId: verification.agentId,
       scanType: verification.scanType,
       result: verification.result as InMemoryVerification["result"],
-      details: verification.details as Record<string, unknown> | null ?? null,
-      scanLogs: verification.scanLogs as InMemoryVerification["scanLogs"] ?? null,
+      details: (verification.details as Record<string, unknown> | null) ?? null,
+      scanLogs:
+        (verification.scanLogs as InMemoryVerification["scanLogs"]) ?? null,
       createdAt: new Date(),
     };
     _inMemVerifications.push(record);
@@ -213,7 +243,11 @@ export async function getVerificationsByAgentId(agentId: number) {
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
-  return await db.select().from(verifications).where(eq(verifications.agentId, agentId)).orderBy(desc(verifications.createdAt));
+  return await db
+    .select()
+    .from(verifications)
+    .where(eq(verifications.agentId, agentId))
+    .orderBy(desc(verifications.createdAt));
 }
 
 // Skill-related queries
@@ -221,14 +255,22 @@ export async function getAllVerifiedSkills() {
   const db = await getDb();
   if (!db) return [];
 
-  return await db.select().from(skills).where(eq(skills.isVerified, true)).orderBy(desc(skills.downloadCount));
+  return await db
+    .select()
+    .from(skills)
+    .where(eq(skills.isVerified, true))
+    .orderBy(desc(skills.downloadCount));
 }
 
 export async function getSkillByName(skillName: string) {
   const db = await getDb();
   if (!db) return undefined;
 
-  const result = await db.select().from(skills).where(eq(skills.skillName, skillName)).limit(1);
+  const result = await db
+    .select()
+    .from(skills)
+    .where(eq(skills.skillName, skillName))
+    .limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
 
@@ -237,7 +279,11 @@ export async function checkMalwareHash(hash: string) {
   const db = await getDb();
   if (!db) return undefined;
 
-  const result = await db.select().from(malwareDatabase).where(eq(malwareDatabase.malwareHash, hash)).limit(1);
+  const result = await db
+    .select()
+    .from(malwareDatabase)
+    .where(eq(malwareDatabase.malwareHash, hash))
+    .limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
 

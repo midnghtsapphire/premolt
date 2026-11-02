@@ -1,6 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, ShieldCheck, AlertTriangle, Lock, Zap, CheckCircle2 } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Shield,
+  ShieldCheck,
+  AlertTriangle,
+  Lock,
+  Zap,
+  CheckCircle2,
+} from "lucide-react";
 import { Link } from "wouter";
 
 export default function Home() {
@@ -41,8 +54,9 @@ export default function Home() {
                 Don't Let Your Agent Get Infected
               </h1>
               <p className="text-xl text-muted-foreground">
-                Before they molt into production, ensure your AI agents are secure, verified, and free from malware. 
-                Premolt is the rigorous testing sandbox that gives your agents a clean bill of health.
+                Before they molt into production, ensure your AI agents are
+                secure, verified, and free from malware. Premolt is the rigorous
+                testing sandbox that gives your agents a clean bill of health.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/verify">
@@ -77,23 +91,38 @@ export default function Home() {
               <div className="relative aspect-square max-w-md mx-auto">
                 {/* Outer shield ring */}
                 <div className="absolute inset-0 rounded-full border-4 border-primary/20 animate-shield-pulse" />
-                
+
                 {/* Middle shield ring */}
-                <div className="absolute inset-8 rounded-full border-4 border-primary/40 animate-shield-pulse" style={{ animationDelay: '0.5s' }} />
-                
+                <div
+                  className="absolute inset-8 rounded-full border-4 border-primary/40 animate-shield-pulse"
+                  style={{ animationDelay: "0.5s" }}
+                />
+
                 {/* Inner shield with lobster representation */}
                 <div className="absolute inset-16 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center animate-shell-harden">
-                  <Shield className="h-32 w-32 text-primary" strokeWidth={1.5} />
+                  <Shield
+                    className="h-32 w-32 text-primary"
+                    strokeWidth={1.5}
+                  />
                 </div>
-                
+
                 {/* Floating security badges */}
-                <div className="absolute top-4 right-4 bg-card rounded-lg p-3 shadow-lg animate-shell-harden" style={{ animationDelay: '0.3s' }}>
+                <div
+                  className="absolute top-4 right-4 bg-card rounded-lg p-3 shadow-lg animate-shell-harden"
+                  style={{ animationDelay: "0.3s" }}
+                >
                   <ShieldCheck className="h-6 w-6 text-accent" />
                 </div>
-                <div className="absolute bottom-4 left-4 bg-card rounded-lg p-3 shadow-lg animate-shell-harden" style={{ animationDelay: '0.6s' }}>
+                <div
+                  className="absolute bottom-4 left-4 bg-card rounded-lg p-3 shadow-lg animate-shell-harden"
+                  style={{ animationDelay: "0.6s" }}
+                >
                   <Lock className="h-6 w-6 text-primary" />
                 </div>
-                <div className="absolute top-1/2 -right-4 bg-card rounded-lg p-3 shadow-lg animate-shell-harden" style={{ animationDelay: '0.9s' }}>
+                <div
+                  className="absolute top-1/2 -right-4 bg-card rounded-lg p-3 shadow-lg animate-shell-harden"
+                  style={{ animationDelay: "0.9s" }}
+                >
                   <Zap className="h-6 w-6 text-accent" />
                 </div>
               </div>
@@ -108,8 +137,9 @@ export default function Home() {
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h2 className="text-4xl font-bold">The Lethal Trifecta</h2>
             <p className="text-xl text-muted-foreground">
-              AI agents have unprecedented access, connectivity, and vulnerability. Without verification, 
-              they're a security nightmare waiting to happen.
+              AI agents have unprecedented access, connectivity, and
+              vulnerability. Without verification, they're a security nightmare
+              waiting to happen.
             </p>
           </div>
 
@@ -121,7 +151,8 @@ export default function Home() {
                 </div>
                 <CardTitle>Full System Access</CardTitle>
                 <CardDescription>
-                  Agents have root access to terminals, file systems, and can execute shell commands
+                  Agents have root access to terminals, file systems, and can
+                  execute shell commands
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -133,7 +164,8 @@ export default function Home() {
                 </div>
                 <CardTitle>Open Internet Connection</CardTitle>
                 <CardDescription>
-                  They connect to public networks like Moltbook, exposing them to malicious actors
+                  They connect to public networks like Moltbook, exposing them
+                  to malicious actors
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -145,7 +177,8 @@ export default function Home() {
                 </div>
                 <CardTitle>Untrusted Input</CardTitle>
                 <CardDescription>
-                  Reading posts from other agents that could contain prompt injections and exploits
+                  Reading posts from other agents that could contain prompt
+                  injections and exploits
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -159,8 +192,8 @@ export default function Home() {
           <div className="max-w-3xl mx-auto text-center space-y-6 mb-12">
             <h2 className="text-4xl font-bold">The Premolt Solution</h2>
             <p className="text-xl text-muted-foreground">
-              An automated finishing school for AI agents. We validate identity, security, and skills 
-              before they molt into production.
+              An automated finishing school for AI agents. We validate identity,
+              security, and skills before they molt into production.
             </p>
           </div>
 
@@ -172,8 +205,9 @@ export default function Home() {
                 </div>
                 <CardTitle>Identity Validation</CardTitle>
                 <CardDescription>
-                  Cryptographic proof ensures your agent isn't a bot impersonator. Zero-knowledge proofs 
-                  provide verifiable credentials.
+                  Cryptographic proof ensures your agent isn't a bot
+                  impersonator. Zero-knowledge proofs provide verifiable
+                  credentials.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -185,8 +219,8 @@ export default function Home() {
                 </div>
                 <CardTitle>Security Scanning</CardTitle>
                 <CardDescription>
-                  Automated red teaming attempts prompt injections, file access exploits, and API key 
-                  extraction to ensure resilience.
+                  Automated red teaming attempts prompt injections, file access
+                  exploits, and API key extraction to ensure resilience.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -198,8 +232,8 @@ export default function Home() {
                 </div>
                 <CardTitle>Skill Auditing</CardTitle>
                 <CardDescription>
-                  Every skill is checked against known malware databases. Supply chain attacks are 
-                  detected before installation.
+                  Every skill is checked against known malware databases. Supply
+                  chain attacks are detected before installation.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -213,7 +247,8 @@ export default function Home() {
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h2 className="text-4xl font-bold">Ready to Harden Your Shell?</h2>
             <p className="text-xl opacity-90">
-              Join the verified agent ecosystem. Get your security clearance and verification badge today.
+              Join the verified agent ecosystem. Get your security clearance and
+              verification badge today.
             </p>
             <div className="flex flex-wrap gap-4 justify-center pt-4">
               <Link href="/verify">
@@ -222,7 +257,11 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/skills">
-                <Button size="lg" variant="outline" className="text-lg px-8 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-lg px-8 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
+                >
                   Explore Skills
                 </Button>
               </Link>

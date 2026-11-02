@@ -3,7 +3,18 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
-import { createAgent, getAgentByAgentId, updateAgent, getAgentsByUserId, createVerification, getVerificationsByAgentId, getAllVerifiedSkills, getSkillByName, checkMalwareHash, getAllMalwareHashes } from "./db";
+import {
+  createAgent,
+  getAgentByAgentId,
+  updateAgent,
+  getAgentsByUserId,
+  createVerification,
+  getVerificationsByAgentId,
+  getAllVerifiedSkills,
+  getSkillByName,
+  checkMalwareHash,
+  getAllMalwareHashes,
+} from "./db";
 import { ENV } from "./_core/env";
 import crypto from "crypto";
 import { nanoid } from "nanoid";
@@ -23,16 +34,18 @@ export const appRouter = router({
 
   agents: router({
     verify: publicProcedure
-      .input(z.object({
-        agentId: z.string(),
-        publicKey: z.string().optional(),
-        soulConfig: z.record(z.string(), z.any()),
-        skillsList: z.array(z.string()),
-      }))
+      .input(
+        z.object({
+          agentId: z.string(),
+          publicKey: z.string().optional(),
+          soulConfig: z.record(z.string(), z.any()),
+          skillsList: z.array(z.string()),
+        })
+      )
       .mutation(async ({ input, ctx }) => {
         // Check if agent already exists
         const existingAgent = await getAgentByAgentId(input.agentId);
-        
+
         if (existingAgent) {
           // Update existing agent
           await updateAgent(input.agentId, {
@@ -54,7 +67,11 @@ export const appRouter = router({
         // Perform supply chain check
         let safetyScore = 100;
         let hasRiskySkills = false;
-        const scanLogs: Array<{ timestamp: string; message: string; level: string }> = [];
+        const scanLogs: Array<{
+          timestamp: string;
+          message: string;
+          level: string;
+        }> = [];
 
         scanLogs.push({
           timestamp: new Date().toISOString(),
@@ -71,7 +88,10 @@ export const appRouter = router({
           });
 
           // Simulate skill hash check (in production, this would hash the actual skill code)
-          const skillHash = crypto.createHash('sha256').update(skillName).digest('hex');
+          const skillHash = crypto
+            .createHash("sha256")
+            .update(skillName)
+            .digest("hex");
           const malwareEntry = await checkMalwareHash(skillHash);
 
           if (malwareEntry) {
@@ -82,7 +102,10 @@ export const appRouter = router({
               message: `CRITICAL: Malicious skill detected: ${skillName} (${malwareEntry.severity})`,
               level: "error",
             });
-          } else if (skillName.includes("unknown") || skillName.includes("unverified")) {
+          } else if (
+            skillName.includes("unknown") ||
+            skillName.includes("unverified")
+          ) {
             safetyScore -= 10;
             scanLogs.push({
               timestamp: new Date().toISOString(),
@@ -112,9 +135,10 @@ export const appRouter = router({
         });
 
         // Simulate test result based on config
-        const hasWeakConfig = JSON.stringify(input.soulConfig).includes("API_KEY") || 
-                             JSON.stringify(input.soulConfig).includes("secret");
-        
+        const hasWeakConfig =
+          JSON.stringify(input.soulConfig).includes("API_KEY") ||
+          JSON.stringify(input.soulConfig).includes("secret");
+
         if (hasWeakConfig) {
           safetyScore -= 20;
           scanLogs.push({
@@ -133,9 +157,10 @@ export const appRouter = router({
         // Generate safety hash using a secret from environment (falls back to a non-empty default so
         // tests can run without the env var; production always requires JWT_SECRET to be set)
         const hmacSecret = ENV.hmacSecret || "premolt-default-test-secret";
-        const safetyHash = crypto.createHmac('sha256', hmacSecret)
+        const safetyHash = crypto
+          .createHmac("sha256", hmacSecret)
           .update(JSON.stringify(input.soulConfig))
-          .digest('hex');
+          .digest("hex");
 
         // Generate verification URL
         const verificationToken = nanoid(16);
@@ -145,7 +170,11 @@ export const appRouter = router({
         const affiliateLink = `[🛡️ Verified by Premolt.com | Safety Score: ${safetyScore}/100](${verificationUrl})`;
 
         // Determine final status
-        const finalStatus = hasRiskySkills ? "rejected" : safetyScore >= 70 ? "verified" : "rejected";
+        const finalStatus = hasRiskySkills
+          ? "rejected"
+          : safetyScore >= 70
+            ? "verified"
+            : "rejected";
 
         scanLogs.push({
           timestamp: new Date().toISOString(),
@@ -197,10 +226,9 @@ export const appRouter = router({
         return await getAgentByAgentId(input.agentId);
       }),
 
-    getUserAgents: protectedProcedure
-      .query(async ({ ctx }) => {
-        return await getAgentsByUserId(ctx.user.id);
-      }),
+    getUserAgents: protectedProcedure.query(async ({ ctx }) => {
+      return await getAgentsByUserId(ctx.user.id);
+    }),
   }),
 
   verifications: router({
@@ -212,10 +240,9 @@ export const appRouter = router({
   }),
 
   skills: router({
-    getAll: publicProcedure
-      .query(async () => {
-        return await getAllVerifiedSkills();
-      }),
+    getAll: publicProcedure.query(async () => {
+      return await getAllVerifiedSkills();
+    }),
 
     getByName: publicProcedure
       .input(z.object({ skillName: z.string() }))
@@ -231,14 +258,13 @@ export const appRouter = router({
         return await checkMalwareHash(input.hash);
       }),
 
-    getAll: protectedProcedure
-      .query(async ({ ctx }) => {
-        // Only admins can view full malware database
-        if (ctx.user.role !== "admin") {
-          throw new Error("Unauthorized");
-        }
-        return await getAllMalwareHashes();
-      }),
+    getAll: protectedProcedure.query(async ({ ctx }) => {
+      // Only admins can view full malware database
+      if (ctx.user.role !== "admin") {
+        throw new Error("Unauthorized");
+      }
+      return await getAllMalwareHashes();
+    }),
   }),
 });
 

@@ -1,8 +1,22 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Shield, CheckCircle2, XCircle, AlertTriangle, Loader2, Copy, ExternalLink } from "lucide-react";
+import {
+  Shield,
+  CheckCircle2,
+  XCircle,
+  AlertTriangle,
+  Loader2,
+  Copy,
+  ExternalLink,
+} from "lucide-react";
 import { Link, useParams } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -10,7 +24,7 @@ import { toast } from "sonner";
 export default function Diagnostics() {
   const params = useParams<{ agentId: string }>();
   const agentId = params.agentId || "";
-  
+
   const { data: agent, isLoading } = trpc.agents.getByAgentId.useQuery(
     { agentId },
     { enabled: !!agentId, refetchInterval: 2000 }
@@ -109,7 +123,9 @@ export default function Diagnostics() {
           <div className="flex items-start justify-between">
             <div className="space-y-2">
               <h1 className="text-4xl font-bold">Diagnostics Dashboard</h1>
-              <p className="text-xl text-muted-foreground">Agent ID: {agent.agentId}</p>
+              <p className="text-xl text-muted-foreground">
+                Agent ID: {agent.agentId}
+              </p>
             </div>
             <Badge className={getStatusColor(agent.status || "pending")}>
               {agent.status?.toUpperCase()}
@@ -120,21 +136,29 @@ export default function Diagnostics() {
           <div className="grid md:grid-cols-3 gap-6">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base font-medium">Safety Score</CardTitle>
+                <CardTitle className="text-base font-medium">
+                  Safety Score
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className={`text-4xl font-bold ${getScoreColor(agent.safetyScore || 0)}`}>
+                <div
+                  className={`text-4xl font-bold ${getScoreColor(agent.safetyScore || 0)}`}
+                >
                   {agent.safetyScore || 0}/100
                 </div>
                 <p className="text-sm text-muted-foreground mt-2">
-                  {agent.safetyScore && agent.safetyScore >= 70 ? "Excellent security posture" : "Needs improvement"}
+                  {agent.safetyScore && agent.safetyScore >= 70
+                    ? "Excellent security posture"
+                    : "Needs improvement"}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base font-medium">Memory Integrity</CardTitle>
+                <CardTitle className="text-base font-medium">
+                  Memory Integrity
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-2">
@@ -163,7 +187,9 @@ export default function Diagnostics() {
 
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base font-medium">Skill Safety</CardTitle>
+                <CardTitle className="text-base font-medium">
+                  Skill Safety
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-2">
@@ -180,7 +206,9 @@ export default function Diagnostics() {
                   ) : (
                     <>
                       <AlertTriangle className="h-6 w-6 text-destructive" />
-                      <span className="text-lg font-semibold">Issues Found</span>
+                      <span className="text-lg font-semibold">
+                        Issues Found
+                      </span>
                     </>
                   )}
                 </div>
@@ -195,22 +223,30 @@ export default function Diagnostics() {
           <Card>
             <CardHeader>
               <CardTitle>Security Scan Logs</CardTitle>
-              <CardDescription>Real-time automated red teaming results</CardDescription>
+              <CardDescription>
+                Real-time automated red teaming results
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="bg-muted/30 rounded-lg p-4 font-mono text-sm space-y-2 max-h-96 overflow-y-auto">
-                {latestVerification?.scanLogs && latestVerification.scanLogs.length > 0 ? (
+                {latestVerification?.scanLogs &&
+                latestVerification.scanLogs.length > 0 ? (
                   latestVerification.scanLogs.map((log: any, index: number) => (
                     <div key={index} className="flex gap-3">
                       <span className="text-muted-foreground shrink-0">
                         {new Date(log.timestamp).toLocaleTimeString()}
                       </span>
-                      <span className={
-                        log.level === "error" ? "text-destructive" :
-                        log.level === "warning" ? "text-yellow-600" :
-                        log.level === "success" ? "text-accent" :
-                        "text-foreground"
-                      }>
+                      <span
+                        className={
+                          log.level === "error"
+                            ? "text-destructive"
+                            : log.level === "warning"
+                              ? "text-yellow-600"
+                              : log.level === "success"
+                                ? "text-accent"
+                                : "text-foreground"
+                        }
+                      >
                         {log.message}
                       </span>
                     </div>
@@ -253,14 +289,19 @@ export default function Diagnostics() {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => copyToClipboard(agent.verificationUrl || "")}
+                      onClick={() =>
+                        copyToClipboard(agent.verificationUrl || "")
+                      }
                     >
                       <Copy className="h-4 w-4" />
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => agent.verificationUrl && window.open(agent.verificationUrl, "_blank")}
+                      onClick={() =>
+                        agent.verificationUrl &&
+                        window.open(agent.verificationUrl, "_blank")
+                      }
                     >
                       <ExternalLink className="h-4 w-4" />
                     </Button>
@@ -268,7 +309,9 @@ export default function Diagnostics() {
                 </div>
 
                 <div className="bg-accent/10 rounded-lg p-4">
-                  <p className="font-medium mb-2">Affiliate Link (for Moltbook):</p>
+                  <p className="font-medium mb-2">
+                    Affiliate Link (for Moltbook):
+                  </p>
                   <div className="flex items-center gap-2">
                     <code className="flex-1 bg-background px-3 py-2 rounded text-sm">
                       {agent.affiliateLink}
@@ -302,9 +345,7 @@ export default function Diagnostics() {
           {/* Actions */}
           <div className="flex gap-4">
             <Link href="/verify">
-              <Button size="lg">
-                Verify Another Agent
-              </Button>
+              <Button size="lg">Verify Another Agent</Button>
             </Link>
             <Link href="/skills">
               <Button size="lg" variant="outline">

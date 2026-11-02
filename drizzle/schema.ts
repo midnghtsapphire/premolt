@@ -1,4 +1,13 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, boolean, json } from "drizzle-orm/mysql-core";
+import {
+  int,
+  mysqlEnum,
+  mysqlTable,
+  text,
+  timestamp,
+  varchar,
+  boolean,
+  json,
+} from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -27,7 +36,9 @@ export const agents = mysqlTable("agents", {
   userId: int("userId").references(() => users.id),
   publicKey: text("publicKey"),
   soulConfig: json("soulConfig").$type<Record<string, any>>(),
-  status: mysqlEnum("status", ["pending", "verified", "rejected", "scanning"]).default("pending").notNull(),
+  status: mysqlEnum("status", ["pending", "verified", "rejected", "scanning"])
+    .default("pending")
+    .notNull(),
   safetyScore: int("safetyScore").default(0),
   safetyHash: varchar("safetyHash", { length: 255 }),
   verificationUrl: varchar("verificationUrl", { length: 500 }),
@@ -44,11 +55,16 @@ export type InsertAgent = typeof agents.$inferInsert;
  */
 export const verifications = mysqlTable("verifications", {
   id: int("id").autoincrement().primaryKey(),
-  agentId: int("agentId").notNull().references(() => agents.id),
+  agentId: int("agentId")
+    .notNull()
+    .references(() => agents.id),
   scanType: varchar("scanType", { length: 100 }).notNull(),
   result: mysqlEnum("result", ["pass", "fail", "warning"]).notNull(),
   details: json("details").$type<Record<string, any>>(),
-  scanLogs: json("scanLogs").$type<Array<{ timestamp: string; message: string; level: string }>>(),
+  scanLogs:
+    json("scanLogs").$type<
+      Array<{ timestamp: string; message: string; level: string }>
+    >(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -81,8 +97,12 @@ export type InsertSkill = typeof skills.$inferInsert;
  */
 export const agentSkills = mysqlTable("agentSkills", {
   id: int("id").autoincrement().primaryKey(),
-  agentId: int("agentId").notNull().references(() => agents.id),
-  skillId: int("skillId").notNull().references(() => skills.id),
+  agentId: int("agentId")
+    .notNull()
+    .references(() => agents.id),
+  skillId: int("skillId")
+    .notNull()
+    .references(() => skills.id),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -97,7 +117,9 @@ export const malwareDatabase = mysqlTable("malwareDatabase", {
   malwareHash: varchar("malwareHash", { length: 255 }).notNull().unique(),
   malwareName: varchar("malwareName", { length: 255 }),
   description: text("description"),
-  severity: mysqlEnum("severity", ["low", "medium", "high", "critical"]).default("medium").notNull(),
+  severity: mysqlEnum("severity", ["low", "medium", "high", "critical"])
+    .default("medium")
+    .notNull(),
   source: varchar("source", { length: 255 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
